@@ -6,9 +6,6 @@ html, body {
 
 #globe {
   cursor: move;
-  position: absolute;
-  height: 300px;
-  width: 400px;
 }
 
 #current {
@@ -17,10 +14,12 @@ html, body {
   font-family: sans-serif;
   margin-left: 4%;
   margin-top: 4%;
+  left: 30%;
 }
 
 .roba {
   color: red;
+  align-content: left;
 }
 
 .hidden {

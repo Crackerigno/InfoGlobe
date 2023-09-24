@@ -6,7 +6,7 @@
 // ms to wait after dragging before auto-rotating
 var rotationDelay = 3000
 // scale of the globe (not the canvas element)
-var scaleFactor = 0.5
+var scaleFactor = 0.8
 // autorotation speed
 var degPerSec = 6
 // start angles
@@ -69,8 +69,10 @@ function setAngles() {
 }
 
 function scale() {
-  width = document.documentElement.clientWidth
-  height = document.documentElement.clientHeight
+  // width = document.documentElement.clientWidth
+  // height = document.documentElement.clientHeight
+  width = 700
+  height = 400
   canvas.attr('width', width).attr('height', height)
   projection
     .scale((scaleFactor * Math.min(width, height)) / 2)
