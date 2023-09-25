@@ -1,7 +1,9 @@
+
 html, body {
+  font-family: 'Roboto';
   margin: 0;
   padding: 0;
-  background: #555;
+  background: #192044;
 }
 
 #globe {
@@ -11,16 +13,31 @@ html, body {
 #current {
   position: absolute;
   color: white;
-  font-family: sans-serif;
   margin-left: 4%;
   margin-top: 4%;
   left: 30%;
 }
 
-.roba {
-  color: red;
-  align-content: left;
+#infopanel {
+  position: absolute;
+  margin-left: 585px;
+  width: 400px;
+  height: 200px;
+  border-color: darkslategray;
+  background-color: #142222;
+  border-top-width: 10px;
+  border-top-style: solid;
+  margin-top: 100px;
+  border-bottom-width: 10px;
+  border-bottom-style: solid;
+  border-left-width: 10px;
+  border-left-style: solid;
+  border-right-width: 10px;
+  border-right-style: solid;
+  border-radius: 20px;
 }
+
+
 
 .hidden {
   display: none;
