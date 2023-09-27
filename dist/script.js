@@ -90,6 +90,24 @@ function stopRotation() {
   var rotation = false
 }
 
+function prova(){
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://127.0.0.1:6969/?url=https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_POPULATION@DF_POP_PROJ,1.0/AUS.POP.PS._T._T.?startPeriod=2021&endPeriod=2021&dimensionAtObservation=AllDimensions");
+  xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+  xhr.withCredentials = true;
+  xhr.crossDomain = true;
+  xhr.send();
+  xhr.responseType = "json";
+  xhr.onload = () => {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      console.log(xhr.response);
+    } else {
+      console.log(`Error: ${xhr.status}`);
+    }
+  };
+
+}
+
 function dragstarted() {
   v0 = versor.cartesian(projection.invert(d3.mouse(this)))
   r0 = projection.rotate()
@@ -116,7 +134,6 @@ function render() {
   fill(land, colorLand)
   if (currentCountry) {
     fill(currentCountry, colorCountry)
-    //console.log("dentro if render")
 
   }
 }
@@ -175,12 +192,9 @@ function polygonContains(polygon, point) {
 
 function mousemove() {
   var c = getCountry(this)
-  //console.log("ciao mousemove")
   if (!c) {
     if (currentCountry) {
-      //console.log("ciao dentro if current")
       leave(currentCountry)
-      //console.log("dopo leave country")
       currentCountry = undefined
       render()
     }
@@ -196,6 +210,7 @@ function mousemove() {
 }
 
 document.addEventListener("click", function(){
+  prova()
   if(document.getElementById("infopanel").classList.contains("hidden")) visible = false
   else visible = true
   if(!visible) {
