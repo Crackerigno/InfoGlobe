@@ -1,40 +1,48 @@
 
-html, body {
+body {
   font-family: 'Roboto';
   margin: 0;
   padding: 0;
-  background: #192044;
+  flex-shrink: 0;
+}
+
+
+html{
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient( black 70%, white 100%);
+}
+
+#InfoGlobe{
+  color: #FFF;
+  font-family: Space Grotesk;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 5%;
 }
 
 #globe {
   cursor: move;
 }
 
-#current {
+#infoTabs{
   position: absolute;
   color: white;
-  margin-left: 4%;
+  margin-left: 30%;
   margin-top: 4%;
   left: 30%;
 }
 
+#current {
+}
+
 #infopanel {
-  position: absolute;
-  margin-left: 585px;
+  margin-left: 5%;
   width: 400px;
   height: 200px;
-  border-color: darkslategray;
-  background-color: #142222;
-  border-top-width: 10px;
-  border-top-style: solid;
-  margin-top: 100px;
-  border-bottom-width: 10px;
-  border-bottom-style: solid;
-  border-left-width: 10px;
-  border-left-style: solid;
-  border-right-width: 10px;
-  border-right-style: solid;
-  border-radius: 20px;
+  
 }
 
 
