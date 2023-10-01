@@ -1,0 +1,4 @@
+infoglobe
++ .gitignore
+#ignoro ambiente virtuale python
+venv

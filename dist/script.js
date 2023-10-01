@@ -116,7 +116,6 @@ function render() {
   fill(land, colorLand)
   if (currentCountry) {
     fill(currentCountry, colorCountry)
-    //console.log("dentro if render")
 
   }
 }
@@ -155,6 +154,22 @@ function loadData(cb) {
       cb(world, countries)
     })
   })
+}
+
+function prova(){
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://127.0.0.1:6969/?url=https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_POPULATION@DF_POP_PROJ,1.0/AUS.POP.PS._T._T.?startPeriod=2021&endPeriod=2021&dimensionAtObservation=AllDimensions");
+  xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+  xhr.crossDomain = true;
+  xhr.send();
+  xhr.responseType = "text";
+  xhr.onload = () => {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      console.log(xhr.response);
+    } else {
+      console.log(`Error: ${xhr.status}`);
+    }
+  };
 }
 
 // https://github.com/d3/d3-polygon
@@ -196,6 +211,7 @@ function mousemove() {
 
 
 function mouseclick() {
+  prova()
   if(document.getElementById("infopanel").classList.contains("hidden")) visible = false
    else visible = true
    if(!visible) {
@@ -207,25 +223,8 @@ function mouseclick() {
      document.getElementById("infopanel").classList.remove("visible")
      document.getElementById("infopanel").classList.add("hidden")}
      visible = false
-  
-  
+
 }
-
-
-
-// document.addEventListener("click", function(){
-//   if(document.getElementById("infopanel").classList.contains("hidden")) visible = false
-//   else visible = true
-//   if(!visible) {
-//     document.getElementById("infopanel").classList.remove("hidden")
-//     document.getElementById("infopanel").classList.add("visible")
-//     visible = true
-//   }
-//   else {
-//     document.getElementById("infopanel").classList.remove("visible")
-//     document.getElementById("infopanel").classList.add("hidden")}
-//     visible = false
-// })
 
 function getCountry(event) {
   var pos = projection.invert(d3.mouse(event))
@@ -237,7 +236,6 @@ function getCountry(event) {
     })
   })
 }
-
 
 //
 // Initialization

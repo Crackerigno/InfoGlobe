@@ -1,26 +1,34 @@
 import requests as req
-import xmltodict
-from flask import Flask, make_response
+from flask import Flask, make_response, request
 from flask_cors import CORS, cross_origin
+from lxml import etree
+
 
 app = Flask(__name__)
-CORS(app, support_credentials=True)
+CORS(app)
 
-@app.route("/")
-@cross_origin(supports_credentials=True)
+@app.route("/", methods=['GET'])
+@cross_origin()
 def hello():
-    url = req.GET.get('url')
+    url = request.args.get('url','')
     response = req.get(url)
-    data = xmltodict.parse(response.content)    
-    resp = make_response(data)
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    return response.json()
+    
+    # Parsa il contenuto XML
+    root = etree.fromstring(response.content)
+    
+    # Namespace mapping
+    namespaces = {
+        'generic': 'http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic',
+    }
+    
+    # Trova il valore per l'attributo 'value' con l'`id` desiderato (es. 'TIME_PERIOD')
+    id_value = root.xpath("//generic:ObsValue", namespaces=namespaces)[0].get('value')
+    
+    # Stampa il valore ottenuto
+    print("Popolazione':", id_value)
 
-# def jprint(obj):
-#     # create a formatted string of the Python JSON object
-#     text = json.dumps(obj, sort_keys=True, indent=4)
-#     print(text)
-#     return text
+    resp = make_response(id_value)
+    return resp
 
 if __name__ == "__main__":
     app.run("localhost", 6969)
