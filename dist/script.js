@@ -156,7 +156,7 @@ function loadData(cb) {
   })
 }
 
-function prova(){
+function populationVal(){
   const xhr = new XMLHttpRequest();
   xhr.open("GET", "http://127.0.0.1:6969/?url=https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_POPULATION@DF_POP_PROJ,1.0/AUS.POP.PS._T._T.?startPeriod=2021&endPeriod=2021&dimensionAtObservation=AllDimensions");
   xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -165,7 +165,8 @@ function prova(){
   xhr.responseType = "text";
   xhr.onload = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      console.log(xhr.response);
+      var div = document.getElementById('popInfo');
+      div.innerHTML = xhr.response;
     } else {
       console.log(`Error: ${xhr.status}`);
     }
@@ -211,7 +212,7 @@ function mousemove() {
 
 
 function mouseclick() {
-  prova()
+  populationVal()
   if(document.getElementById("infopanel").classList.contains("hidden")) visible = false
    else visible = true
    if(!visible) {
