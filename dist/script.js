@@ -21,7 +21,6 @@ var colorCountry = '#a00'
 //
 // Handler
 //
-
 function enter(country) {
   var country = countryList.find(function(c) {
     return parseInt(c.id, 10) === parseInt(country.id, 10)
@@ -191,12 +190,9 @@ function polygonContains(polygon, point) {
 
 function mousemove() {
   var c = getCountry(this)
-  //console.log("ciao mousemove")
   if (!c) {
     if (currentCountry) {
-      //console.log("ciao dentro if current")
       leave(currentCountry)
-      //console.log("dopo leave country")
       currentCountry = undefined
       render()
     }
@@ -213,16 +209,19 @@ function mousemove() {
 
 function mouseclick() {
   populationVal()
-  if(document.getElementById("infopanel").classList.contains("hidden")) visible = false
+  let el = document.getElementById("infopanel")
+  let elCountry = document.getElementById("countryName")
+  if(el.classList.contains("hidden")) visible = false
    else visible = true
    if(!visible) {
-     document.getElementById("infopanel").classList.remove("hidden")
-     document.getElementById("infopanel").classList.add("visible")
+     el.classList.remove("hidden")
+     el.classList.add("visible")
+     elCountry.innerHTML = document.getElementById("current").innerText
      visible = true
    }
    else {
-     document.getElementById("infopanel").classList.remove("visible")
-     document.getElementById("infopanel").classList.add("hidden")}
+     el.classList.remove("visible")
+     el.classList.add("hidden")}
      visible = false
 
 }

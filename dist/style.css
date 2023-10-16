@@ -6,7 +6,6 @@ body {
   flex-shrink: 0;
 }
 
-
 html{
   width: 100vw;
   height: 100vh;
@@ -36,16 +35,18 @@ html{
 }
 
 #current {
+  position:absolute;
+  right:300px;
+  bottom:-40px;
 }
 
 #infopanel {
+  position:fixed;
   margin-left: 5%;
   width: 400px;
   height: 200px;
   
 }
-
-
 
 .hidden {
   display: none;
