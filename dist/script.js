@@ -25,6 +25,7 @@ function enter(country) {
   var country = countryList.find(function(c) {
     return parseInt(c.id, 10) === parseInt(country.id, 10)
   })
+  currentCod = country.alp
   current.text(country && country.name || '')
 }
 
@@ -53,6 +54,7 @@ var land, countries
 var countryList
 var autorotate, now, diff, roation
 var currentCountry
+var currentCod
 var visible
 
 //
@@ -80,7 +82,7 @@ function scale() {
 }
 
 function startRotation(delay) {
-  autorotate.restart(rotate, delay || 0)
+  //autorotate.restart(rotate, delay || 0)
   var rotation = true
 }
 
@@ -148,16 +150,25 @@ function rotate(elapsed) {
 function loadData(cb) {
   d3.json('https://unpkg.com/world-atlas@1/world/110m.json', function(error, world) {
     if (error) throw error
-    d3.tsv('https://gist.githubusercontent.com/mbostock/4090846/raw/07e73f3c2d21558489604a0bc434b3a5cf41a867/world-country-names.tsv', function(error, countries) {
+    d3.tsv('./world-country-names.tsv', function(error, countries) {
       if (error) throw error
       cb(world, countries)
     })
   })
 }
 
+
+//Crack, funzione che in base al nome della nazione ritorna l'id da passare al parser
+function getCountryId(){
+  var id = currentCountry.alp;
+  alert(currentCod);
+}
+ 
 function populationVal(){
+  //getCountryId();
+
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://127.0.0.1:6969/?url=https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_POPULATION@DF_POP_PROJ,1.0/AUS.POP.PS._T._T.?startPeriod=2021&endPeriod=2021&dimensionAtObservation=AllDimensions");
+  xhr.open("GET", "http://127.0.0.1:6969/?url=https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_POPULATION@DF_POP_PROJ,1.0/"+currentCod+".POP.PS._T._T.?startPeriod=2021&endPeriod=2021&dimensionAtObservation=AllDimensions");
   xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
   xhr.crossDomain = true;
   xhr.send();
@@ -225,6 +236,8 @@ function mouseclick() {
      visible = false
 
 }
+
+
 
 function getCountry(event) {
   var pos = projection.invert(d3.mouse(event))

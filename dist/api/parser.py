@@ -22,7 +22,7 @@ def hello():
     }
     
     # Trova il valore per l'attributo 'value' con l'`id` desiderato (es. 'TIME_PERIOD')
-    id_value = root.xpath("//generic:ObsValue", namespaces=namespaces)[0].get('value')
+    id_value = root.xpath("//generic:ObsValue", namespaces=namespaces)[1].get('value')
     
     # Stampa il valore ottenuto
     print("Popolazione':", id_value)
