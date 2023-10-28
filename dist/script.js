@@ -57,6 +57,9 @@ var currentCountry
 var currentCod
 var visible
 
+
+var selectedCountry
+
 //
 // Functions
 //
@@ -176,7 +179,7 @@ function populationVal(){
   xhr.onload = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var div = document.getElementById('popInfo');
-      div.innerHTML = xhr.response;
+      div.innerHTML = xhr.response.replace(/\B(?=(\d{3})+(?!\d))/g,".");;
     } else {
       console.log(`Error: ${xhr.status}`);
     }
@@ -220,20 +223,23 @@ function mousemove() {
 
 function mouseclick() {
   populationVal()
-  let el = document.getElementById("infopanel")
-  let elCountry = document.getElementById("countryName")
-  if(el.classList.contains("hidden")) visible = false
-   else visible = true
-   if(!visible) {
-     el.classList.remove("hidden")
-     el.classList.add("visible")
-     elCountry.innerHTML = document.getElementById("current").innerText
-     visible = true
-   }
-   else {
-     el.classList.remove("visible")
-     el.classList.add("hidden")}
-     visible = false
+  
+  if(document.getElementById("current").innerText != ""){
+    let elCountry = document.getElementById("countryName")
+    elCountry.innerHTML = document.getElementById("current").innerText
+  }
+  // if(el.classList.contains("hidden")) visible = false
+  //  else visible = true
+  //  if(!visible) {
+  //    el.classList.remove("hidden")
+  //    el.classList.add("visible")
+  //    elCountry.innerHTML = document.getElementById("current").innerText
+  //    visible = true
+  //  }
+  //  else {
+  //    el.classList.remove("visible")
+  //    el.classList.add("hidden")}
+  //    visible = false
 
 }
 
