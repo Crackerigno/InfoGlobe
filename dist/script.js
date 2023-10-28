@@ -263,7 +263,10 @@ canvas
     .on('end', dragended)
    )
   .on('mousemove', mousemove)
-  .on('click', mouseclick)
+  .on('click', function myfunction_clickevent(){
+    $.ajax({
+        url:"/test",
+        context: document.body});})
  
 
 loadData(function(world, cList) {
