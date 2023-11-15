@@ -16,7 +16,7 @@ var colorWater = '#fff'
 var colorLand = '#111'
 var colorGraticule = '#ccc'
 var colorCountry = '#a00'
-
+var intervalId = 0;
 
 //
 // Handler
@@ -49,7 +49,8 @@ var r0 // Projection rotation as Euler angles at start.
 var q0 // Projection rotation as versor at start.
 var lastTime = d3.now()
 var degPerMs = degPerSec / 1000
-var width, height
+var width = 800
+var height = 650
 var land, countries
 var countryList
 var autorotate, now, diff, roation
@@ -72,20 +73,90 @@ function setAngles() {
   projection.rotate(rotation)
 }
 
+function transform() {
+  return d3.zoomIdentity
+      .translate(width / 2.75, height / 2.75)
+      .scale(zoomLevel)
+      .translate(-width/2.75, -height/2.75);
+}
+
+var zoomLevel = 2;
+
 function scale() {
   // width = document.documentElement.clientWidth
-  // height = document.documentElement.clientHeight
-  width = 700
-  height = 400
-  canvas.attr('width', width).attr('height', height)
-  projection
-    .scale((scaleFactor * Math.min(width, height)) / 2)
-    .translate([width / 2, height / 2])
+  // height = document.documentElement.clientHeight 
+  canvas
+  .attr('width', width).attr('height', height)
+
+    projection
+      .scale((scaleFactor * Math.min(width, height)) / 2)
+      .translate([width / 2, height / 2])
   render()
 }
 
+var zoomInOrOut = 0;
+
+//funzione che decide se zoomare o dezoomare
+function scaleG() {
+  // width = document.documentElement.clientWidth
+  // height = document.documentElement.clientHeight
+   
+  clearInterval(intervalId) 
+   canvas
+   .attr('width', widthScale).attr('height', heightScale)
+
+  if(widthScale > width){
+    zoomInOrOut = 1;//zoom in
+  }else{
+    zoomInOrOut = 0;//zoom out
+  }
+
+  intervalId = setInterval(scaleGlobe,10)
+}
+
+
+function scaleGlobe(){
+  
+  //alert(zoomInOrOut);
+  if(zoomInOrOut == 1){
+    //zoom in
+    if(width < widthScale){
+
+      width += 10;
+      height += 10;
+
+      canvas
+      .attr('width', width).attr('height', height)
+
+        projection
+            .scale((scaleFactor * Math.min(width, height)) / 2)
+            .translate([width / 2, height / 2])
+        render()
+    }else{
+      clearInterval(intervalId) 
+    }
+  }else{
+    //zoom out
+    if(width > widthScale){
+
+      width -= 10;
+      height -= 10;
+
+      canvas
+      .attr('width', width).attr('height', height)
+
+        projection
+            .scale((scaleFactor * Math.min(width, height)) / 2)
+            .translate([width / 2, height / 2])
+        render()
+    }else{
+      clearInterval(intervalId) 
+    }
+  }
+}
+
 function startRotation(delay) {
-  //autorotate.restart(rotate, delay || 0)
+  autorotate.restart(rotate, delay || 0)
   var rotation = true
 }
 
@@ -256,9 +327,28 @@ function getCountry(event) {
   })
 }
 
+
+window.addEventListener('click', function(e){   
+  if (document.getElementById('globe').contains(e.target)){
+    //scaleFactor = 1.2;
+    widthScale = 1000;
+    heightScale = 750;
+    scaleG()
+    //alert("dentro")
+  } else{
+    //scaleFactor = 0.8;
+    widthScale = 800;
+    heightScale = 600;
+    scaleG()
+    //alert("fuori")
+  }
+});
+
+
 //
 // Initialization
 //
+
 
 setAngles()
 
