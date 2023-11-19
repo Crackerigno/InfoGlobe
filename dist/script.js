@@ -233,16 +233,27 @@ function loadData(cb) {
 
 
 //Crack, funzione che in base al nome della nazione ritorna l'id da passare al parser
-function getCountryId(){
+function filtraPaesiNonDisponibili(){
   var id = currentCountry.alp;
-  alert(currentCod);
+  if(currentCod.toLowerCase() == "ata" || currentCod.toLowerCase() == "atf"){
+    return true;
+  }
+  return false;
+  alert(currentCod.toLowerCase());
 }
  
 function populationVal(){
-  //getCountryId();
+  if(filtraPaesiNonDisponibili()){
+    var div = document.getElementById('popInfo');
+      div.innerHTML = "NA"
+  }
+  let dropdownList = document.getElementById('year');
+  selecetedIndex = dropdownList.selectedIndex;
+  selectedOption = dropdownList.options[selecetedIndex];
+  //alert(selectedOption.text)
 
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://127.0.0.1:6969/?url=https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_POPULATION@DF_POP_PROJ,1.0/"+currentCod+".POP.PS._T._T.?startPeriod=2021&endPeriod=2021&dimensionAtObservation=AllDimensions");
+  xhr.open("GET", "http://127.0.0.1:6969/?url=https://api.worldbank.org/v2/country/"+currentCod.toLowerCase()+"/indicator/SP.POP.TOTL?date="+selectedOption.text+"");
   xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
   xhr.crossDomain = true;
   xhr.send();

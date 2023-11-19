@@ -6,7 +6,7 @@ from lxml import etree
 
 app = Flask(__name__)
 CORS(app)
-
+app.config['DEBUG'] = True
 @app.route("/", methods=['GET'])
 @cross_origin()
 def hello():
@@ -18,11 +18,11 @@ def hello():
     
     # Namespace mapping
     namespaces = {
-        'generic': 'http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic',
+        'wb': 'http://www.worldbank.org',
     }
     
     # Trova il valore per l'attributo 'value' con l'`id` desiderato (es. 'TIME_PERIOD')
-    id_value = root.xpath("//generic:ObsValue", namespaces=namespaces)[1].get('value')
+    id_value = root.xpath("//wb:value/text()", namespaces=namespaces)[0]
     
     # Stampa il valore ottenuto
     print("Popolazione':", id_value)
