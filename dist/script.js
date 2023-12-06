@@ -57,9 +57,43 @@ var autorotate, now, diff, roation
 var currentCountry
 var currentCod
 var visible
-
+var anniGraph = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022 ] // anni per grafico
+var popGraph = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] // array contenente la popolazione dei vari anni default
 
 var selectedCountry
+
+//
+// Graph
+//
+
+var data = [{ //Serve solo per inizializzarlo, dopo si aggiornerà il grafico senza usare questa variabile
+  x: anniGraph,
+  y: popGraph,
+  type: 'scatter'
+}];
+
+var layout = {
+  autosize: false,
+  width: 700,
+  height: 500,
+  margin: {
+    l: 50,
+    r: 50,
+    b: 100,
+    t: 50,
+    pad: 4
+  },
+  paper_bgcolor: '#111 ',
+  plot_bgcolor: '#111 ',
+  //title: 'Popolazione nel tempo',
+  showlegend: false
+};
+
+Plotly.newPlot('myDiv', data, layout, {displayModeBar: false});
+
+
+
+
 
 //
 // Functions
@@ -110,6 +144,7 @@ function scaleG() {
   }else{
     zoomInOrOut = 0;//zoom out
   }
+  
 
   intervalId = setInterval(scaleGlobe,10)
 }
@@ -244,28 +279,45 @@ function filtraPaesiNonDisponibili(){
  
 function populationVal(){
   if(filtraPaesiNonDisponibili()){
-    var div = document.getElementById('popInfo');
-      div.innerHTML = "NA"
+    // var div = document.getElementById('popInfo');
+    //   div.innerHTML = "NA"
+    
+    var charData = [{
+      x: anniGraph,
+      y: popGraph,
+      type: 'scatter'
+    }];
+     Plotly.newPlot('myDiv',charData,layout);
+    
+    return;
   }
-  let dropdownList = document.getElementById('year');
-  selecetedIndex = dropdownList.selectedIndex;
-  selectedOption = dropdownList.options[selecetedIndex];
-  //alert(selectedOption.text)
 
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", "http://127.0.0.1:6969/?url=https://api.worldbank.org/v2/country/"+currentCod.toLowerCase()+"/indicator/SP.POP.TOTL?date="+selectedOption.text+"");
-  xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-  xhr.crossDomain = true;
-  xhr.send();
-  xhr.responseType = "text";
-  xhr.onload = () => {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      var div = document.getElementById('popInfo');
-      div.innerHTML = xhr.response.replace(/\B(?=(\d{3})+(?!\d))/g,".");;
-    } else {
-      console.log(`Error: ${xhr.status}`);
-    }
-  };
+   const xhr = new XMLHttpRequest();
+   xhr.open("GET", "http://127.0.0.1:6969/?url=https://api.worldbank.org/v2/country/"+currentCod.toLowerCase()+"/indicator/SP.POP.TOTL?");
+   xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+   xhr.crossDomain = true;
+   xhr.send();
+   xhr.responseType = "text";
+   xhr.onload = () => {
+     if (xhr.readyState == 4 && xhr.status == 200) {
+       //var div = document.getElementById('popInfo');
+       var result = JSON.parse(xhr.response);
+       var coordinateNelFor = []
+       for(i = 0; i< anniGraph.length ; i++){
+        //alert(result[22-i])
+        //data[i]['y'][i] = result[22-i]
+        coordinateNelFor.push(result[22-i])
+       }
+       var charData = [{
+        x: anniGraph,
+        y: coordinateNelFor,
+        type: 'scatter'
+      }];
+       Plotly.newPlot('myDiv',charData,layout);
+     } else {
+       console.log(`Error: ${xhr.status}`);
+     }
+   };
 }
 
 // https://github.com/d3/d3-polygon
@@ -304,8 +356,10 @@ function mousemove() {
 
 
 function mouseclick() {
-  populationVal()
   
+  
+  populationVal()
+
   if(document.getElementById("current").innerText != ""){
     let elCountry = document.getElementById("countryName")
     elCountry.innerHTML = document.getElementById("current").innerText
@@ -353,6 +407,10 @@ window.addEventListener('click', function(e){
     scaleG()
     //alert("fuori")
   }
+  
+  canvas
+  .attr('width', 1000).attr('height', 850)
+  render()
 });
 
 
@@ -382,3 +440,4 @@ loadData(function(world, cList) {
   scale()
   autorotate = d3.timer(rotate)
 })
+

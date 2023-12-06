@@ -22,7 +22,12 @@ def hello():
     }
     
     # Trova il valore per l'attributo 'value' con l'`id` desiderato (es. 'TIME_PERIOD')
-    id_value = root.xpath("//wb:value/text()", namespaces=namespaces)[0]
+    
+    id_value = []
+
+    for x in range(23):
+        id_value.append(root.xpath("//wb:value/text()", namespaces=namespaces)[x])
+        
     
     # Stampa il valore ottenuto
     print("Popolazione':", id_value)
